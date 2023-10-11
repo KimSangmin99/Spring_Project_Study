@@ -1,0 +1,111 @@
+// 테이블 생성 쿼리
+
+CREATE TABLE BOOK_MEMBER(
+  memberId VARCHAR(50),
+  memberPw VARCHAR(100) NOT NULL,
+  memberName VARCHAR(30) NOT NULL,
+  memberMail VARCHAR(100) NOT NULL,
+  memberAddr1 VARCHAR(100) NOT NULL,
+  memberAddr2 VARCHAR(100) NOT NULL,
+  memberAddr3 VARCHAR(100) NOT NULL,
+  adminCk int NOT NULL,
+  regDate DATE NOT NULL,
+  money int NOT NULL,
+  point int NOT NULL,
+  PRIMARY KEY(memberId)
+);
+
+// 삽입 쿼리
+-- 회원가입 쿼리(MySQL)
+insert into book_member values('admin', 'admin', 'admin', 'admin', 'admin', 'admin', 'admin', 1, sysdate(), 1000000, 1000000);
+
+=============================================================================================================================================
+기본 쿼리
+=============================================================================================================================================
+데이터 추가 (INSERT)
+사용법
+INSERT INTO 테이블명 [컬럼1, 컬럼2, ...] VALUES (값1, 값2, ...);
+
+예제 : 전체 컬럼
+INSERT INTO table_name VALUES (1105, '테스트', '대한민국');
+
+예제 : 일부 컬럼
+INSERT INTO table_name (id, name) VALUES (1105, '테스트');
+
+예제 : 다수 추가
+INSERT INTO table_name VALUES (1105, '테스트', '대한민국'),(1106, '테스트2', '미국');
+
+
+▶데이터 수정 (UPDATE)
+사용법
+UPDATE 테이블명 SET 컬럼1 = 수정값1 [, 컬럼2 = 수정값2 ...] [WHERE 조건];
+
+예제 : 테이블 데이터 전체 수정
+UPDATE table_name SET country = '대한민국';
+
+예제 : 테이블 데이터 일부 수정
+UPDATE table_name SET name = '테스트 변경', country = '대한민국' WHERE id = 1105;
+
+
+▶데이터 삭제 (DELETE)
+사용법
+DELETE FROM 테이블명 [WHERE 조건];
+
+예제 : 테이블 데이터 전체 삭제
+DELETE FROM table_name;
+
+
+=============================================================================================================================================
+-- 국가 테이블 생성
+create table vam_nation(
+    nationId varchar(2) primary key,
+    nationName varchar(50)
+);
+
+--------------------------------------------------------------------------------------------------------
+-- 국가 테이블 데이터 삽입
+insert into vam_nation values ('01', '국내');
+insert into vam_nation values ('02', '국외');
+select * from vam_nation;
+--------------------------------------------------------------------------------------------------------
+-- 작가 테이블 생성
+create table vam_author(
+    authorId int auto_increment primary key,
+    authorName varchar(50),
+    nationId varchar(2),
+    authorIntro text,
+    foreign key (nationId) references vam_nation(nationId)
+);
+
+--------------------------------------------------------------------------------------------------------
+insert into vam_author(authorName, nationId, authorIntro) values('유홍준', '01', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('김난도', '01', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('폴크루그먼', '02', '작가 소개입니다' );
+select * from vam_author;
+--------------------------------------------------------------------------------------------------------
+alter table vam_author add regDate timestamp default now();
+alter table vam_author add updateDate timestamp default now();
+select * from vam_author;
+--------------------------------------------------------------------------------------------------------
+delete from vam_author;
+    
+alter table vam_author auto_increment = 1;
+   
+insert into vam_author(authorName, nationId, authorIntro) values('유홍준', '01', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('김난도', '01', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('폴크루그먼', '02', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('안재성', '01', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('임순득', '01', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('히가시노게이고', '02', '작가 소개입니다' );   
+insert into vam_author(authorName, nationId, authorIntro) values('조남주', '01', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('황석영', '01', '작가 소개입니다' );
+insert into vam_author(authorName, nationId, authorIntro) values('도미시마 다케오', '02', '작가 소개입니다' );   
+ 
+select * from vam_author;
+
+
+--재귀 복사
+insert into vam_author(authorname, nationid)(select authorname, nationid from vam_author);
+select * from vam_author;
+
+
