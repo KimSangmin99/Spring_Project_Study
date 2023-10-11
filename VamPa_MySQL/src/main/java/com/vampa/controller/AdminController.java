@@ -1,5 +1,6 @@
 package com.vampa.controller;
 
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vampa.model.AuthorVO;
+import com.vampa.model.BookVO;
 import com.vampa.model.Criteria;
 import com.vampa.model.PageDTO;
+import com.vampa.service.AdminService;
 import com.vampa.service.AuthorService;
 
 @Controller
@@ -26,6 +30,9 @@ public class AdminController {
 	
 	@Autowired
 	private AuthorService authorService;
+
+	@Autowired
+	private AdminService adminService;
 	
 	// 관리자 메인 페이지 이동
 	@RequestMapping(value="main", method = RequestMethod.GET)
@@ -41,8 +48,20 @@ public class AdminController {
     
     /* 상품 등록 페이지 접속 */
     @RequestMapping(value = "goodsEnroll", method = RequestMethod.GET)
-    public void goodsEnrollGET() throws Exception{
+    public void goodsEnrollGET(Model model) throws Exception{
         logger.info("상품 등록 페이지 접속");
+        
+        ObjectMapper objm = new ObjectMapper();
+        
+        List list = adminService.cateList();
+        
+        String cateList = objm.writeValueAsString(list);
+        
+        model.addAttribute("cateList", cateList);
+        
+        logger.info("변경 전.........." + list);
+		logger.info("변경 후.........." + cateList);
+        
     }
     
     /* 작가 등록 페이지 접속 */
@@ -103,6 +122,43 @@ public class AdminController {
 		rttr.addFlashAttribute("modify_result", result);
 		return "redirect:/admin/authorManage";
 	}
+	
+	/* 상품 등록 */
+	@PostMapping("/goodsEnroll")
+	public String goodsEnrollPOST(BookVO book, RedirectAttributes rttr) {
+		
+		logger.info("goodsEnrollPOST......" + book);
+		
+		adminService.bookEnroll(book);
+		
+		rttr.addFlashAttribute("enroll_result", book.getBookName());
+		
+		return "redirect:/admin/goodsManage";
+	}
+	
+	/* 작가 검색 팝업창 */
+	@GetMapping("/authorPop")
+	public void authorPopGET(Criteria cri, Model model) throws Exception{
+		
+		logger.info("authorPopGET.......");
+		
+		cri.setAmount(5);
+		
+		/* 게시물 출력 데이터 */
+		List list = authorService.authorGetList(cri);
+		
+		if(!list.isEmpty()) {
+			model.addAttribute("list",list);	// 작가 존재 경우
+		} else {
+			model.addAttribute("listCheck", "empty");	// 작가 존재하지 않을 경우
+		}
+		
+		
+		/* 페이지 이동 인터페이스 데이터 */
+		model.addAttribute("pageMaker", new PageDTO(cri, authorService.authorGetTotal(cri)));
+	
+	}
+	
 }
 
 

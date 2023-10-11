@@ -56,18 +56,19 @@ DELETE FROM table_name;
 
 
 =============================================================================================================================================
+쿼리 순서
+=============================================================================================================================================
 -- 국가 테이블 생성
 create table vam_nation(
     nationId varchar(2) primary key,
     nationName varchar(50)
 );
 
---------------------------------------------------------------------------------------------------------
 -- 국가 테이블 데이터 삽입
 insert into vam_nation values ('01', '국내');
 insert into vam_nation values ('02', '국외');
 select * from vam_nation;
---------------------------------------------------------------------------------------------------------
+
 -- 작가 테이블 생성
 create table vam_author(
     authorId int auto_increment primary key,
@@ -82,10 +83,12 @@ insert into vam_author(authorName, nationId, authorIntro) values('유홍준', '0
 insert into vam_author(authorName, nationId, authorIntro) values('김난도', '01', '작가 소개입니다' );
 insert into vam_author(authorName, nationId, authorIntro) values('폴크루그먼', '02', '작가 소개입니다' );
 select * from vam_author;
+
 --------------------------------------------------------------------------------------------------------
 alter table vam_author add regDate timestamp default now();
 alter table vam_author add updateDate timestamp default now();
 select * from vam_author;
+
 --------------------------------------------------------------------------------------------------------
 delete from vam_author;
     
@@ -103,9 +106,45 @@ insert into vam_author(authorName, nationId, authorIntro) values('도미시마 �
  
 select * from vam_author;
 
-
+--------------------------------------------------------------------------------------------------------
 --재귀 복사
 insert into vam_author(authorname, nationid)(select authorname, nationid from vam_author);
 select * from vam_author;
+
+--------------------------------------------------------------------------------------------------------
+-- 상품 테이블 
+create table vam_book(
+    bookId int primary key auto_increment,
+    bookName varchar(50)   not null,
+    authorId int,
+    publeYear Date not null,
+    publisher varchar(70) not null,
+    cateCode varchar(30),
+    bookPrice int not null,
+    bookStock int not null,
+    bookDiscount decimal(2,2),
+    bookIntro text,
+    bookContents text,
+    regDate timestamp default now(),
+    updateDate timestamp default now()
+);
+
+--------------------------------------------------------------------------------------------------------
+-- MySQL
+create table vam_bcate(
+    tier int(1) not null,
+    cateName varchar(30) not null,
+    cateCode varchar(30) not null,
+    cateParent varchar(30) ,
+    primary key(cateCode),
+    foreign key(cateParent) references vam_bcate(cateCode) 
+);
+
+--------------------------------------------------------------------------------------------------------
+-- 외래키 추가
+alter table vam_book add foreign key (authorId) references vam_author(authorId);
+alter table vam_book add foreign key (cateCode) references vam_bcate(cateCode);
+
+
 
 

@@ -13,7 +13,7 @@
 		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/ksj?serverTimezone=Asia/Seoul"></property> -->
 		
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3308/bookmall?serverTimezone=Asia/Seoul"></property> 
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/bookmall?serverTimezone=Asia/Seoul"></property> 
 		<property name="username" value="root"></property>
 		<property name="password" value="shkim123!"></property>
 	</bean>
