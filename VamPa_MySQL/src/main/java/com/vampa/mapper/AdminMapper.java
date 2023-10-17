@@ -2,6 +2,7 @@ package com.vampa.mapper;
 
 import java.util.List;
 
+import com.vampa.model.AttachImageVO;
 import com.vampa.model.BookVO;
 import com.vampa.model.CateVO;
 import com.vampa.model.Criteria;
@@ -28,4 +29,10 @@ public interface AdminMapper {
 	
 	/* 상품 정보 삭제 */
 	public int goodsDelete(int bookId);
+	
+	/* 이미지 등록 */
+	public void imageEnroll(AttachImageVO vo);
+	
+	/* 지정 상품 이미지 전체 삭제 */
+	public void deleteImageAll(int bookId);
 }

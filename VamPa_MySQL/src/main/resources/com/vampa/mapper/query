@@ -199,4 +199,22 @@ insert into vam_book(bookName, authorId, publeYear, publisher, cateCode, bookPri
 (select bookName, authorId, publeYear, publisher, cateCode, bookPrice, bookStock, bookDiscount,bookIntro, bookContents from vam_book);
 
 
+--------------------------------------------------------------------------------------------------------
+[Spring][쇼핑몰 프로젝트][27] 업로드 이미지 정보 등록 - 1
+
+-- MySQL
+    create table vam_image(
+        bookId int ,
+        fileName varchar(100) not null,
+        uploadPath varchar(200) not null,
+        uuid varchar(100)not null ,
+        primary key (uuid),
+        foreign key (bookId) references vam_book(bookId)
+    );
+--------------------------------------------------------------------------------------------------------
+테이블 지웠을때 다시 세팅
+
+ALTER TABLE `vam_image` AUTO_INCREMENT=1;
+SET @COUNT = 0;
+UPDATE `vam_image` SET bookId = @COUNT:=@COUNT+1;
 

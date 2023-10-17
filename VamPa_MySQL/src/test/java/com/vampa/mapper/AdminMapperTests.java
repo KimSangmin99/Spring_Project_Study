@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.vampa.model.BookVO;
+import com.vampa.model.AttachImageVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -79,6 +79,7 @@ public class AdminMapperTests {
 	 */
 	
 	/* 상품 정보 삭제 */
+	/*
 	@Test
 	public void goodsDeleteTest() {
 		
@@ -89,6 +90,21 @@ public class AdminMapperTests {
 		if(result == 1) {
 			System.out.println("삭제 성공");
 		}
+	}
+	*/
+	/* 이미지 등록 */
+	@Test
+	public void imageEnrollTest() {
+		
+		AttachImageVO vo = new AttachImageVO();
+		
+		vo.setBookId(1);
+		vo.setFileName("test");
+		vo.setUploadPath("test");
+		vo.setUuid("test2");
+		
+		mapper.imageEnroll(vo);
 		
 	}
+		
 }

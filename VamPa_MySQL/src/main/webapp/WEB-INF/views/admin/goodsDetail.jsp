@@ -139,6 +139,16 @@
 					<textarea name="bookContents" id="bookContents_textarea" disabled>${goodsInfo.bookContents}</textarea>
 				</div>
 			</div>
+			<div class="form_section">
+				<div class="form_section_title">
+					<label>상품 이미지</label>
+				</div>
+				<div class="form_section_content">
+
+					<div id="uploadResult"></div>
+					
+				</div>
+			</div>
 			<div class="btn_section">
 				<button id="cancelBtn" class="btn">상품 목록</button>
 				<button id="modifyBtn" class="btn enroll_btn">수정</button>
@@ -273,20 +283,47 @@
 				if(targetCate2.cateParent === obj.value){
 					$(obj).attr("selected", "selected");
 				}
-			});				
+			});
+			
+			/* 이미지 정보 호출 */
+			let bookId = '<c:out value="${goodsInfo.bookId}"/>';
+			let uploadResult = $("#uploadResult");			
+			
+			$.getJSON("/getAttachList", {bookId : bookId}, function(arr){
+				
+				if(arr.length === 0){
+					let str = "";
+					str += "<div id='result_card'>";
+					str += "<img src='/resources/img/goodsNoImage.png'>";
+					str += "</div>";
+					
+					uploadResult.html(str);
+					return;
+				}
+				
+				let str = "";
+				let obj = arr[0];	
+				
+				let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+				str += "<div id='result_card'";
+				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
+				str += ">";
+				str += "<img src='/display?fileName=" + fileCallPath +"'>";
+				str += "</div>";
+				
+				uploadResult.html(str)
+			});	
 			
 		}); // $(document).ready
 	
 		/* 목록 이동 버튼 */
 		$("#cancelBtn").on("click", function(e){
-			alert("cancleBtn");
 			e.preventDefault();
 			$("#moveForm").submit();	
 		});	
 		
 		/* 수정 페이지 이동 */
 		$("#modifyBtn").on("click", function(e){
-			alert("modifyBtn");
 			e.preventDefault();
 			let addInput = '<input type="hidden" name="bookId" value="${goodsInfo.bookId}">';
 			$("#moveForm").append(addInput);

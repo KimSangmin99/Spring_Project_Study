@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -135,6 +136,15 @@
 					<div class="form_section_content bct">
 						<textarea name="bookContents" id="bookContents_textarea">${goodsInfo.bookContents}</textarea>
 						<span class="ck_warn bookContents_warn">책 목차를 입력해주세요.</span>
+					</div>
+				</div>
+				<div class="form_section">
+					<div class="form_section_title">
+						<label>상품 이미지</label>
+					</div>
+					<div class="form_section_content">
+						<input type="file" id="fileItem" name='uploadFile' style="height: 30px;">
+						<div id="uploadResult"></div>
 					</div>
 				</div>
 				<input type="hidden" name='bookId' value="${goodsInfo.bookId}">
